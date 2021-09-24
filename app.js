@@ -8,6 +8,7 @@ const indexRouter = require('./routes/index');
 const welcomeRouter = require('./routes/welcome');
 
 const loginController = require('./controllers/login');
+const db = require('./controllers/db');
 
 const app = express();
 
@@ -25,6 +26,12 @@ app.use('/', indexRouter);
 app.use('/welcome', welcomeRouter);
 
 app.post('/login', loginController);
+
+db.init().then(() => {
+  console.log("DB connected")
+}).catch((err) => {
+  console.log(err);
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

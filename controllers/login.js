@@ -1,7 +1,7 @@
-const users = require("../data/users").usersDB
 const bcrypt = require('bcrypt');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
+const db = require('../controllers/db');
 
 // get config vars
 dotenv.config();
@@ -12,6 +12,7 @@ function generateAccessToken(username) {
 
 module.exports = async (req, res) => {
   try {
+    let users = await db.login();
     let foundUser = users.find((data) => req.body.email === data.email);
     if(foundUser) {
       // If the user is found assign JWT token and redirect to the welcome page otherwise throw error.
